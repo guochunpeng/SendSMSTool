@@ -86,6 +86,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * @param content 短息内容
      */
     private void sendMessage3( String content) {
+        if(null==contactsBeans){
+            ToastUtil.showToast(mContext,"未选择联系人");
+            return;
+        }
+        if(0==contactsBeans.size()){
+            ToastUtil.showToast(mContext,"未选择联系人");
+            return;
+        }
         StringBuffer tels=new StringBuffer("smsto:");
         for(int i=0;i<contactsBeans.size();i++){
             String tel=contactsBeans.get(i).getMobile();
@@ -97,6 +105,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         }
 
+        if("smsto:".equals(tels.toString())){
+            ToastUtil.showToast(mContext,"无合法联系人");
+            return;
+        }
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse(tels.toString()));
         intent.putExtra("sms_body", content);
         startActivity(intent);

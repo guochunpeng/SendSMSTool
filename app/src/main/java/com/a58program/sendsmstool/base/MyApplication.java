@@ -5,12 +5,9 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Typeface;
 
-import com.a58program.sendsmstool.constant.GlobalParams;
-import com.a58program.sendsmstool.utils.TelephoneUtils;
 //import com.umeng.analytics.MobclickAgent;
 //import com.umeng.commonsdk.UMConfigure;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 

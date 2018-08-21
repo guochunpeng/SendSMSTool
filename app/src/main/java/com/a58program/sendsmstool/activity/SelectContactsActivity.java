@@ -123,6 +123,16 @@ public class SelectContactsActivity extends BaseActivity implements View.OnClick
                      selectBeans.add(contactsBeans.get(i));
                     }
                 }
+                if(null==selectBeans){
+                    ToastUtil.showToast(mContext,"请勾选联系人");
+                    return;
+                }
+
+                if(0==selectBeans.size()){
+                    ToastUtil.showToast(mContext,"请勾选联系人");
+                    return;
+                }
+
                 Intent intent1=new Intent();
                 intent1.putExtra("selectData", selectBeans);
                 setResult(SELECT_CONTACTS_OK,intent1);

@@ -36,6 +36,9 @@ public class ContactsAdapter extends BaseAdapter {
     }
 
     public void selectRange(int start ,int end){
+        for(int i=0;i<datas.size();i++){
+            isCheck.put(i,false);
+        }
         for(int i=start;i<end;i++){
             isCheck.put(i,true);
         }

@@ -50,7 +50,7 @@ public class SelectContactsActivity extends BaseActivity implements View.OnClick
     private final String URL = "";
     private ListView lv_contacts;
     private Button bt_select_file,bt_confirm;
-    private String path="/storage/emulated/0/tencent/MicroMsg/Download/6.27gcp.xls";
+    private String path="";
 
     private ContactsAdapter adapter;
     private List<ContactsBean> contactsBeans=new ArrayList<ContactsBean>();
@@ -62,8 +62,6 @@ public class SelectContactsActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter=new ContactsAdapter(contactsBeans,mContext);
-        lv_contacts.setAdapter(adapter);
     }
 
     @Override
@@ -111,7 +109,7 @@ public class SelectContactsActivity extends BaseActivity implements View.OnClick
         switch (view.getId()) {
             case R.id.bt_select_file:
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("*/xls");//无类型限制
+                intent.setType("*/*");//无类型限制
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent, 1);
                 break;
@@ -166,13 +164,14 @@ public class SelectContactsActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onActivityResult(int arg0, int resultCode, Intent data) {
         super.onActivityResult(arg0, resultCode, data);
-
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
             Uri uri = data.getData();
-            if ("file".equalsIgnoreCase(uri.getScheme())) {//使用第三方应用打开
-                path = uri.getPath();
-                return;
-            }
+//            if ("file".equalsIgnoreCase(uri.getScheme())) {//使用第三方应用打开
+//                path = uri.getPath();
+//                return;
+//            }
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {//4.4以后
                 path = getPath(this, uri);
             } else {//4.4以下下系统调用方法
@@ -184,7 +183,6 @@ public class SelectContactsActivity extends BaseActivity implements View.OnClick
                return;
             }
             new ReadAsync().execute(path);
-        }
     }
 
     public class ReadAsync extends AsyncTask<String,Integer,Integer>{
@@ -231,7 +229,7 @@ public class SelectContactsActivity extends BaseActivity implements View.OnClick
                 return;
             }
 
-
+            contactsBeans=new ArrayList<ContactsBean>();
             for (int i = 1; i < Rows; ++i) {
                 Cell nameCell = sheet.getCell(nameIndex, i);
                 Cell mobileCell = sheet.getCell(mobileIndex, i);
@@ -263,7 +261,8 @@ public class SelectContactsActivity extends BaseActivity implements View.OnClick
             @Override
             public void run() {
                 tv_total_length.setText(contactsBeans.size()+"");
-                adapter.notifyDataSetChanged();
+                adapter=new ContactsAdapter(contactsBeans,mContext);
+                lv_contacts.setAdapter(adapter);
             }
         });
     }

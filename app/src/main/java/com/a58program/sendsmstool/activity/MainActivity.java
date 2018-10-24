@@ -37,7 +37,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        et_content.setText("恭喜您成为今借到平台优选客户，专享最高5000额度，需要借款请回复短信或添加薇信17600195364");
+        et_content.setText("小额借，额度1000～5000元，审核催收不拨打联系人，芝麻分600以上五分钟下款，需要借款请联系薇信：17600195364 渠道码：");
     }
 
     @Override

@@ -168,10 +168,6 @@ public class SelectContactsActivity extends BaseActivity implements View.OnClick
             return;
         }
             Uri uri = data.getData();
-//            if ("file".equalsIgnoreCase(uri.getScheme())) {//使用第三方应用打开
-//                path = uri.getPath();
-//                return;
-//            }
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {//4.4以后
                 path = getPath(this, uri);
             } else {//4.4以下下系统调用方法
@@ -224,21 +220,27 @@ public class SelectContactsActivity extends BaseActivity implements View.OnClick
                 }
             }
 
-            if(-1==nameIndex||-1==mobileIndex){
+            if(-1==mobileIndex){
                 ToastUtil.showToast(mContext,"表格首行请注明'name'和'mobile'标示");
                 return;
             }
 
             contactsBeans=new ArrayList<ContactsBean>();
             for (int i = 1; i < Rows; ++i) {
-                Cell nameCell = sheet.getCell(nameIndex, i);
+                Cell nameCell =null;
+                if(-1==nameIndex)
+                {
+                    nameCell= sheet.getCell(mobileIndex, i);
+                }else{
+                    nameCell= sheet.getCell(nameIndex, i);
+                }
                 Cell mobileCell = sheet.getCell(mobileIndex, i);
                     if(null==nameCell||null==mobileCell){
                         continue;
                     }
                     String name=nameCell.getContents();
                     String mobile=mobileCell.getContents();
-                    if(null==name||null==mobile||"".equals(mobile)){
+                    if(null==mobile||"".equals(mobile)){
                         continue;
                     }
 
